@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>பில் கால்குலேட்டர் - பரலோக மாதா மாவு மில்</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@600;800&family=Hind+Madurai:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #e8f5e9;
+            --secondary: #fbc02d;
+            --bg: #f2f2f7;
+            --card-bg: #ffffff;
+            --text-main: #1c1c1e;
+            --border-color: #e5e5ea;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Hind Madurai', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Fits exactly to mobile screen height */
+            height: 100dvh; /* For modern mobile browsers to account for address bars */
+            user-select: none;
+            overflow: hidden;
+        }
+
+        /* --- Header --- */
+        .header {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            font-family: 'Baloo Thambi 2', cursive;
+            margin: 0;
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+
+        /* --- Category Selectors --- */
+        .category-container {
+            padding: 10px;
+            background: var(--card-bg);
+            flex-shrink: 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .cat-btn {
+            background: #f2f2f7;
+            border: 2px solid transparent;
+            padding: 8px 2px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #8e8e93;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-family: 'Hind Madurai', sans-serif;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .cat-btn i {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .cat-btn.active {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: scale(0.98);
+        }
+
+        /* --- Display Screen --- */
+        .screen {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            text-align: right;
+            background-color: var(--bg);
+        }
+
+        .selected-info {
+            font-size: 1rem;
+            color: #8e8e93;
+            text-align: left;
+            font-weight: 600;
+            margin-bottom: auto;
+            background: var(--card-bg);
+            padding: 10px 15px;
+            border-radius: 12px;
+            display: inline-block;
+            align-self: flex-start;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .selected-info span { color: var(--text-main); font-weight: 700; }
+
+        .weight-display {
+            font-size: 2.5rem;
+            color: var(--text-main);
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: -1px;
+        }
+
+        .weight-display span {
+            font-size: 1.2rem;
+            color: #8e8e93;
+            font-weight: 600;
+        }
+
+        .total-display {
+            font-family: 'Baloo Thambi 2', cursive;
+            font-size: 3.5rem;
+            color: #34c759; /* iOS Green */
+            line-height: 1;
+        }
+
+        /* --- Numpad (Aligned to Bottom) --- */
+        .numpad-container {
+            background: var(--card-bg);
+            padding: 15px 10px 25px 10px; /* Extra padding at bottom for modern phones */
+            border-top: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .numpad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .num-btn {
+            background: #f2f2f7;
+            border: none;
+            border-radius: 16px; /* Squircle look */
+            height: 70px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: background 0.1s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .num-btn:active {
+            background: #e5e5ea;
+            transform: scale(0.95);
+        }
+
+        .btn-action { 
+            background: #ffdbdb; 
+            color: #ff3b30; 
+            font-size: 1.4rem;
+        }
+        .btn-action:active { background: #ffc2c2; }
+        
+        .btn-clear {
+            background: #e5e5ea;
+            color: #ff3b30;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .btn-calc { 
+            background: var(--primary); 
+            color: white;
+            grid-row: span 2; 
+            height: 100%;
+            font-size: 1.2rem;
+            flex-direction: column;
+        }
+        .btn-calc:active { background: #246627; }
+        
+        .btn-calc i {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .btn-zero { grid-column: span 2; }
+
+        /* Media query for very small screens to fit the numpad perfectly */
+        @media (max-height: 700px) {
+            .num-btn { height: 60px; font-size: 1.5rem; }
+            .weight-display { font-size: 2rem; }
+            .total-display { font-size: 2.8rem; }
+            .cat-btn { padding: 6px 2px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>பில் கால்குலேட்டர்</h1>
+    </div>
+
+    <div class="category-container">
+        <div class="category-grid">
+            <button class="cat-btn active" onclick="setCategory(3.5, 'ஆடு, மாடு (₹3.5)', this)">
+                <i class="fas fa-cow"></i> ஆடு,மாடு<br>₹3.5
+            </button>
+            <button class="cat-btn" onclick="setCategory(10, 'வீட்டிற்கு (₹10)', this)">
+                <i class="fas fa-home"></i> வீட்டிற்கு<br>₹10.0
+            </button>
+            <button class="cat-btn" onclick="setCategory(30, 'மசால் (₹30)', this)">
+                <i class="fas fa-mortar-pestle"></i> மசால்<br>₹30.0
+            </button>
+            <button class="cat-btn" onclick="setCategory(3, 'உளுந்து (₹3)', this)">
+                <i class="fas fa-seedling"></i> உளுந்து<br>₹3.0
+            </button>
+        </div>
+    </div>
+
+    <div class="screen">
+        <div class="selected-info">
+            வகை: <span id="selectedText">ஆடு, மாடு (₹3.5)</span>
+        </div>
+        
+        <div style="margin-top: auto;">
+            <div class="weight-display" id="weightDisplay">
+                0 <span>kg</span>
+            </div>
+            
+            <div class="total-display" id="totalDisplay">₹0.00</div>
+        </div>
+    </div>
+
+    <div class="numpad-container">
+        <div class="numpad">
+            <button class="num-btn" onclick="appendNum('7')">7</button>
+            <button class="num-btn" onclick="appendNum('8')">8</button>
+            <button class="num-btn" onclick="appendNum('9')">9</button>
+            <button class="num-btn btn-action" onclick="deleteLast()"><i class="fas fa-backspace"></i></button>
+
+            <button class="num-btn" onclick="appendNum('4')">4</button>
+            <button class="num-btn" onclick="appendNum('5')">5</button>
+            <button class="num-btn" onclick="appendNum('6')">6</button>
+            <button class="num-btn btn-clear" onclick="clearAll()">C</button>
+
+            <button class="num-btn" onclick="appendNum('1')">1</button>
+            <button class="num-btn" onclick="appendNum('2')">2</button>
+            <button class="num-btn" onclick="appendNum('3')">3</button>
+            <button class="num-btn btn-calc" onclick="clearAll()">
+                <i class="fas fa-check"></i>
+                Next
+            </button>
+
+            <button class="num-btn btn-zero" onclick="appendNum('0')">0</button>
+            <button class="num-btn" onclick="appendNum('.')">.</button>
+        </div>
+    </div>
+
+    <script>
+        let currentWeight = "0";
+        let currentRate = 3.5; 
+
+        const weightDisplay = document.getElementById('weightDisplay');
+        const totalDisplay = document.getElementById('totalDisplay');
+        const selectedText = document.getElementById('selectedText');
+
+        function setCategory(rate, name, btnElement) {
+            currentRate = rate;
+            selectedText.innerText = name;
+            
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            
+            calculateTotal();
+        }
+
+        function appendNum(num) {
+            if (num === '.' && currentWeight.includes('.')) return;
+            
+            if (currentWeight.includes('.')) {
+                let parts = currentWeight.split('.');
+                if (parts[1].length >= 3) return;
+            }
+
+            if (currentWeight === "0" && num !== '.') {
+                currentWeight = num; 
+            } else {
+                currentWeight += num;
+            }
+            
+            updateDisplay();
+        }
+
+        function deleteLast() {
+            if (currentWeight.length > 1) {
+                currentWeight = currentWeight.slice(0, -1);
+            } else {
+                currentWeight = "0";
+            }
+            updateDisplay();
+        }
+
+        function clearAll() {
+            currentWeight = "0";
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            weightDisplay.innerHTML = currentWeight + " <span>kg</span>";
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            let weight = parseFloat(currentWeight);
+            if (isNaN(weight)) weight = 0;
+            
+            let total = weight * currentRate;
+            totalDisplay.innerText = "₹" + total.toFixed(2);
+        }
+    </script>
+
+</body>
+</html>
