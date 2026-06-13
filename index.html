@@ -187,7 +187,7 @@
         /* --- Numpad --- */
         .numpad-container {
             background: var(--card-bg);
-            padding: 12px 10px 15px 10px; /* Tighter padding to save space */
+            padding: 12px 10px 15px 10px;
             border-top: 1px solid var(--border-color);
             flex-shrink: 0;
         }
@@ -204,7 +204,7 @@
             background: #f2f2f7;
             border: none;
             border-radius: 12px;
-            height: 60px; /* Reduced height to perfectly fit 4 rows */
+            height: 60px;
             font-size: 1.6rem;
             font-weight: 600;
             color: var(--text-main);
@@ -253,7 +253,6 @@
 
         .btn-zero { grid-column: span 2; }
 
-        /* Super compact mode for extra small screens */
         @media (max-height: 650px) {
             .num-btn { height: 50px; font-size: 1.4rem; }
             .grand-total-display { font-size: 2rem; }
@@ -269,16 +268,16 @@
 
     <div class="category-container">
         <div class="category-grid">
-            <button class="cat-btn active" onclick="setCategory(3.5, 'ஆடு, மாடு (₹3.5)', this)">
-                <i class="fas fa-cow"></i> ஆடு,மாடு<br>₹3.5
+            <button class="cat-btn active" onclick="setCategory(4.0, 'ஆடு, மாடு (₹4.0)', this)">
+                <i class="fas fa-cow"></i> ஆடு,மாடு<br>₹4.0
             </button>
-            <button class="cat-btn" onclick="setCategory(4.0, 'அரைக்க (₹4.0)', this)">
-                <i class="fas fa-fan"></i> அரைக்க<br>₹4.0
+            <button class="cat-btn" onclick="setCategory(10.0, 'வீட்டிற்கு (₹10.0)', this)">
+                <i class="fas fa-home"></i> வீட்டிற்கு<br>₹10.0
             </button>
-            <button class="cat-btn" onclick="setCategory(30, 'மசால் (₹30)', this)">
+            <button class="cat-btn" onclick="setCategory(30.0, 'மசால் (₹30.0)', this)">
                 <i class="fas fa-mortar-pestle"></i> மசால்<br>₹30.0
             </button>
-            <button class="cat-btn" onclick="setCategory(3, 'உடைத்தல் (₹3)', this)">
+            <button class="cat-btn" onclick="setCategory(3.0, 'உடைத்தல் (₹3.0)', this)">
                 <i class="fas fa-hammer"></i> உடைத்தல்<br>₹3.0
             </button>
         </div>
@@ -287,7 +286,7 @@
     <div class="screen">
         <div class="top-section">
             <div class="selected-info">
-                வகை: <br><span id="selectedText">ஆடு, மாடு (₹3.5)</span>
+                வகை: <br><span id="selectedText">ஆடு, மாடு (₹4.0)</span>
             </div>
         </div>
         
@@ -322,7 +321,6 @@
             <button class="num-btn" onclick="appendNum('1')">1</button>
             <button class="num-btn" onclick="appendNum('2')">2</button>
             <button class="num-btn" onclick="appendNum('3')">3</button>
-            <!-- Removed the code that caused the Add button to push down other rows -->
             <button class="num-btn btn-add" onclick="addToBill()"><i class="fas fa-plus"></i></button>
 
             <!-- Row 4 -->
@@ -334,7 +332,7 @@
 
     <script>
         let currentWeight = "0";
-        let currentRate = 3.5; 
+        let currentRate = 4.0; 
         let grandTotal = 0;
 
         const weightDisplay = document.getElementById('weightDisplay');
