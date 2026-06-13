@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>பில் கால்குலேட்டர் - பரலோக மாதா மாவு மில்</title>
+    
+    <!-- PWA Manifest Link -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2e7d32">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3143/3143460.png">
+
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@600;800&family=Hind+Madurai:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         :root {
             --primary: #2e7d32;
@@ -29,8 +36,8 @@
             padding: 0;
             display: flex;
             flex-direction: column;
-            height: 100vh; /* Fits exactly to mobile screen height */
-            height: 100dvh; /* For modern mobile browsers to account for address bars */
+            height: 100vh;
+            height: 100dvh;
             user-select: none;
             overflow: hidden;
         }
@@ -102,10 +109,16 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            padding: 20px;
+            justify-content: space-between;
+            padding: 15px 20px;
             text-align: right;
             background-color: var(--bg);
+        }
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
         }
 
         .selected-info {
@@ -113,42 +126,83 @@
             color: #8e8e93;
             text-align: left;
             font-weight: 600;
-            margin-bottom: auto;
             background: var(--card-bg);
-            padding: 10px 15px;
+            padding: 8px 12px;
             border-radius: 12px;
-            display: inline-block;
-            align-self: flex-start;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
         .selected-info span { color: var(--text-main); font-weight: 700; }
 
+        .btn-reset-bill {
+            background: #ffdbdb;
+            color: #ff3b30;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .btn-reset-bill:active { background: #ffc2c2; transform: scale(0.95); }
+
+        .middle-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin: 15px 0;
+        }
+
         .weight-display {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             color: var(--text-main);
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 0px;
             letter-spacing: -1px;
         }
 
         .weight-display span {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #8e8e93;
             font-weight: 600;
         }
 
-        .total-display {
+        .current-total-display {
+            font-size: 1.8rem;
+            color: #8e8e93;
+            font-weight: 700;
+        }
+
+        .grand-total-container {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 2px solid var(--primary);
+        }
+
+        .grand-total-label {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .grand-total-display {
             font-family: 'Baloo Thambi 2', cursive;
-            font-size: 3.5rem;
-            color: #34c759; /* iOS Green */
+            font-size: 2.8rem;
+            color: #34c759;
             line-height: 1;
         }
 
-        /* --- Numpad (Aligned to Bottom) --- */
+        /* --- Numpad --- */
         .numpad-container {
             background: var(--card-bg);
-            padding: 15px 10px 25px 10px; /* Extra padding at bottom for modern phones */
+            padding: 15px 10px 25px 10px;
             border-top: 1px solid var(--border-color);
             flex-shrink: 0;
         }
@@ -164,7 +218,7 @@
         .num-btn {
             background: #f2f2f7;
             border: none;
-            border-radius: 16px; /* Squircle look */
+            border-radius: 16px;
             height: 70px;
             font-size: 1.8rem;
             font-weight: 600;
@@ -195,31 +249,30 @@
             font-weight: 700;
         }
 
-        .btn-calc { 
-            background: var(--primary); 
+        .btn-add { 
+            background: #007aff; /* Blue for Add */
             color: white;
             grid-row: span 2; 
             height: 100%;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             flex-direction: column;
+            box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
         }
-        .btn-calc:active { background: #246627; }
+        .btn-add:active { background: #0062cc; }
         
-        .btn-calc i {
+        .btn-add i {
             font-size: 1.8rem;
             margin-bottom: 5px;
         }
 
         .btn-zero { grid-column: span 2; }
 
-        /* Media query for very small screens to fit the numpad perfectly */
         @media (max-height: 700px) {
             .num-btn { height: 60px; font-size: 1.5rem; }
-            .weight-display { font-size: 2rem; }
-            .total-display { font-size: 2.8rem; }
+            .weight-display { font-size: 1.8rem; }
+            .grand-total-display { font-size: 2.2rem; }
             .cat-btn { padding: 6px 2px; }
         }
-
     </style>
 </head>
 <body>
@@ -233,29 +286,38 @@
             <button class="cat-btn active" onclick="setCategory(3.5, 'ஆடு, மாடு (₹3.5)', this)">
                 <i class="fas fa-cow"></i> ஆடு,மாடு<br>₹3.5
             </button>
-            <button class="cat-btn" onclick="setCategory(10, 'வீட்டிற்கு (₹10)', this)">
-                <i class="fas fa-home"></i> வீட்டிற்கு<br>₹10.0
+            <button class="cat-btn" onclick="setCategory(4.0, 'அரைக்க (₹4.0)', this)">
+                <i class="fas fa-fan"></i> அரைக்க<br>₹4.0
             </button>
             <button class="cat-btn" onclick="setCategory(30, 'மசால் (₹30)', this)">
                 <i class="fas fa-mortar-pestle"></i> மசால்<br>₹30.0
             </button>
-            <button class="cat-btn" onclick="setCategory(3, 'உளுந்து (₹3)', this)">
-                <i class="fas fa-seedling"></i> உளுந்து<br>₹3.0
+            <button class="cat-btn" onclick="setCategory(3, 'உடைத்தல் (₹3)', this)">
+                <i class="fas fa-hammer"></i> உடைத்தல்<br>₹3.0
             </button>
         </div>
     </div>
 
     <div class="screen">
-        <div class="selected-info">
-            வகை: <span id="selectedText">ஆடு, மாடு (₹3.5)</span>
+        <div class="top-section">
+            <div class="selected-info">
+                வகை: <br><span id="selectedText">ஆடு, மாடு (₹3.5)</span>
+            </div>
+            <button class="btn-reset-bill" onclick="resetBill()">
+                <i class="fas fa-trash"></i> Clear All
+            </button>
         </div>
         
-        <div style="margin-top: auto;">
+        <div class="middle-section">
             <div class="weight-display" id="weightDisplay">
                 0 <span>kg</span>
             </div>
-            
-            <div class="total-display" id="totalDisplay">₹0.00</div>
+            <div class="current-total-display" id="currentTotalDisplay">₹0.00</div>
+        </div>
+
+        <div class="grand-total-container">
+            <div class="grand-total-label">மொத்தம்:</div>
+            <div class="grand-total-display" id="grandTotalDisplay">₹0.00</div>
         </div>
     </div>
 
@@ -269,14 +331,14 @@
             <button class="num-btn" onclick="appendNum('4')">4</button>
             <button class="num-btn" onclick="appendNum('5')">5</button>
             <button class="num-btn" onclick="appendNum('6')">6</button>
-            <button class="num-btn btn-clear" onclick="clearAll()">C</button>
+            <button class="num-btn btn-clear" onclick="clearCurrent()">C</button>
 
             <button class="num-btn" onclick="appendNum('1')">1</button>
             <button class="num-btn" onclick="appendNum('2')">2</button>
             <button class="num-btn" onclick="appendNum('3')">3</button>
-            <button class="num-btn btn-calc" onclick="clearAll()">
-                <i class="fas fa-check"></i>
-                Next
+            <button class="num-btn btn-add" onclick="addToBill()">
+                <i class="fas fa-plus"></i>
+                Add
             </button>
 
             <button class="num-btn btn-zero" onclick="appendNum('0')">0</button>
@@ -287,9 +349,11 @@
     <script>
         let currentWeight = "0";
         let currentRate = 3.5; 
+        let grandTotal = 0;
 
         const weightDisplay = document.getElementById('weightDisplay');
-        const totalDisplay = document.getElementById('totalDisplay');
+        const currentTotalDisplay = document.getElementById('currentTotalDisplay');
+        const grandTotalDisplay = document.getElementById('grandTotalDisplay');
         const selectedText = document.getElementById('selectedText');
 
         function setCategory(rate, name, btnElement) {
@@ -299,7 +363,7 @@
             document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
             
-            calculateTotal();
+            calculateCurrentTotal();
         }
 
         function appendNum(num) {
@@ -328,22 +392,53 @@
             updateDisplay();
         }
 
-        function clearAll() {
+        function clearCurrent() {
             currentWeight = "0";
             updateDisplay();
         }
 
         function updateDisplay() {
             weightDisplay.innerHTML = currentWeight + " <span>kg</span>";
-            calculateTotal();
+            calculateCurrentTotal();
         }
 
-        function calculateTotal() {
+        function calculateCurrentTotal() {
             let weight = parseFloat(currentWeight);
             if (isNaN(weight)) weight = 0;
             
             let total = weight * currentRate;
-            totalDisplay.innerText = "₹" + total.toFixed(2);
+            currentTotalDisplay.innerText = "₹" + total.toFixed(2);
+            return total;
+        }
+
+        function addToBill() {
+            let itemTotal = calculateCurrentTotal();
+            if (itemTotal > 0) {
+                grandTotal += itemTotal;
+                grandTotalDisplay.innerText = "₹" + grandTotal.toFixed(2);
+                clearCurrent(); // Reset input for the next item
+            }
+        }
+
+        function resetBill() {
+            if (confirm("மொத்த பில்லையும் அழிக்க வேண்டுமா? (Clear entire bill?)")) {
+                grandTotal = 0;
+                grandTotalDisplay.innerText = "₹0.00";
+                clearCurrent();
+            }
+        }
+
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                .then((registration) => {
+                    console.log('ServiceWorker registered successfully.');
+                })
+                .catch((error) => {
+                    console.log('ServiceWorker registration failed:', error);
+                });
+            });
         }
     </script>
 
