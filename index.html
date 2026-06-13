@@ -36,8 +36,7 @@
             padding: 0;
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            height: 100dvh;
+            height: 100dvh; /* Uses exact device height */
             user-select: none;
             overflow: hidden;
         }
@@ -46,7 +45,7 @@
         .header {
             background-color: var(--card-bg);
             color: var(--text-main);
-            padding: 15px 20px;
+            padding: 10px 20px;
             text-align: center;
             border-bottom: 1px solid var(--border-color);
             flex-shrink: 0;
@@ -61,7 +60,7 @@
 
         /* --- Category Selectors --- */
         .category-container {
-            padding: 10px;
+            padding: 8px 10px;
             background: var(--card-bg);
             flex-shrink: 0;
             border-bottom: 1px solid var(--border-color);
@@ -76,7 +75,7 @@
         .cat-btn {
             background: #f2f2f7;
             border: 2px solid transparent;
-            padding: 8px 2px;
+            padding: 6px 2px;
             border-radius: 12px;
             font-size: 0.75rem;
             font-weight: 700;
@@ -94,7 +93,7 @@
 
         .cat-btn i {
             font-size: 1.2rem;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .cat-btn.active {
@@ -109,9 +108,8 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            padding: 15px 20px;
-            text-align: right;
+            justify-content: space-evenly;
+            padding: 10px 20px;
             background-color: var(--bg);
         }
 
@@ -122,13 +120,13 @@
         }
 
         .selected-info {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: #8e8e93;
             text-align: left;
             font-weight: 600;
             background: var(--card-bg);
-            padding: 8px 12px;
-            border-radius: 12px;
+            padding: 6px 10px;
+            border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
@@ -138,32 +136,33 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            margin: 15px 0;
         }
 
         .weight-display {
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: var(--text-main);
             font-weight: 700;
             margin-bottom: 0px;
             letter-spacing: -1px;
+            line-height: 1;
         }
 
         .weight-display span {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #8e8e93;
             font-weight: 600;
         }
 
         .current-total-display {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: #8e8e93;
             font-weight: 700;
+            margin-top: 5px;
         }
 
         .grand-total-container {
             background: var(--card-bg);
-            padding: 15px;
+            padding: 10px 15px;
             border-radius: 16px;
             display: flex;
             justify-content: space-between;
@@ -173,14 +172,14 @@
         }
 
         .grand-total-label {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: var(--text-main);
         }
 
         .grand-total-display {
             font-family: 'Baloo Thambi 2', cursive;
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             color: #34c759;
             line-height: 1;
         }
@@ -188,7 +187,7 @@
         /* --- Numpad --- */
         .numpad-container {
             background: var(--card-bg);
-            padding: 15px 10px 25px 10px;
+            padding: 12px 10px 15px 10px; /* Tighter padding to save space */
             border-top: 1px solid var(--border-color);
             flex-shrink: 0;
         }
@@ -196,7 +195,7 @@
         .numpad {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 8px;
             max-width: 500px;
             margin: 0 auto;
         }
@@ -204,9 +203,9 @@
         .num-btn {
             background: #f2f2f7;
             border: none;
-            border-radius: 16px;
-            height: 70px;
-            font-size: 1.8rem;
+            border-radius: 12px;
+            height: 60px; /* Reduced height to perfectly fit 4 rows */
+            font-size: 1.6rem;
             font-weight: 600;
             color: var(--text-main);
             cursor: pointer;
@@ -246,7 +245,7 @@
         .btn-next {
             background: #34c759;
             color: white;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 700;
             box-shadow: 0 4px 10px rgba(52, 199, 89, 0.3);
         }
@@ -254,11 +253,11 @@
 
         .btn-zero { grid-column: span 2; }
 
-        @media (max-height: 700px) {
-            .num-btn { height: 60px; font-size: 1.5rem; }
-            .weight-display { font-size: 1.8rem; }
-            .grand-total-display { font-size: 2.2rem; }
-            .cat-btn { padding: 6px 2px; }
+        /* Super compact mode for extra small screens */
+        @media (max-height: 650px) {
+            .num-btn { height: 50px; font-size: 1.4rem; }
+            .grand-total-display { font-size: 2rem; }
+            .weight-display { font-size: 1.6rem; }
         }
     </style>
 </head>
@@ -323,6 +322,7 @@
             <button class="num-btn" onclick="appendNum('1')">1</button>
             <button class="num-btn" onclick="appendNum('2')">2</button>
             <button class="num-btn" onclick="appendNum('3')">3</button>
+            <!-- Removed the code that caused the Add button to push down other rows -->
             <button class="num-btn btn-add" onclick="addToBill()"><i class="fas fa-plus"></i></button>
 
             <!-- Row 4 -->
@@ -402,7 +402,7 @@
             if (itemTotal > 0) {
                 grandTotal += itemTotal;
                 grandTotalDisplay.innerText = "₹" + grandTotal.toFixed(2);
-                clearCurrent(); // Reset input so you can scan the next bag
+                clearCurrent(); 
             }
         }
 
@@ -412,7 +412,6 @@
             clearCurrent();
         }
 
-        // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
